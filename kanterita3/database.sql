@@ -6,7 +6,7 @@ create table db_people (
 	nombre VARCHAR(150) NOT NULL,
 	genero CHAR(1),
 	estado_civil VARCHAR(20),
-	fecha_nacimiento DATE,
+	fecha_nacimiento VARCHAR(10),
 	numero_telefono BIGINT NOT NULL ,
 	direccion VARCHAR(150),
 	correo VARCHAR(150) NOT NULL,
