@@ -1,27 +1,25 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+mod models;
 
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
-}
+use crate::models::Status;
+use actix_web::{HttpServer, App, web, Responder};
+use std::io;
 
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
-}
 
-async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hey there!")
+async fn status() -> impl Responder {
+    web::HttpResponse::Ok()
+        .json(Status { status: "Ok".to_string() })
 }
 
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
+#[actix_rt::main]
+async fn main() -> io::Result<()> {
+    
+    println!("Starting server at http://127.0.0.1:8080");
+
     HttpServer::new(|| {
+
         App::new()
-            .service(hello)
-            .service(echo)
-            .route("/hey", web::get().to(manual_hello))
+            .route("/", web::get().to(status))
     })
     .bind("127.0.0.1:8080")?
     .run()
