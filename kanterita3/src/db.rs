@@ -1,7 +1,9 @@
+use crate::models::CreatePerson;
 use crate::models::{DbPeople};
 use deadpool_postgres::Client;
 use tokio_pg_mapper::FromTokioPostgresRow;
 use std::io;
+use actix_web::web;
 
 pub async fn get_people(client: &Client) -> Result<Vec<DbPeople>, io::Error>{
 
@@ -18,16 +20,14 @@ pub async fn get_people(client: &Client) -> Result<Vec<DbPeople>, io::Error>{
 }
 
 
-pub async fn create_person(client: &Client, identificacion: String, nombre: String, 
-							genero: String, estado_civil: String,
-							fecha_nacimiento: String, numero_telefono: i64,
-							direccion: String, correo: String, validado: bool) -> Result<DbPeople, io::Error>{
+pub async fn create_person(client: &Client, json: web::Json<CreatePerson>) -> Result<DbPeople, io::Error>{
+
 	let statement = client.prepare("INSERT INTO db_people (identificacion, nombre, genero, estado_civil, fecha_nacimiento, numero_telefono, direccion, correo, validado) 
 									VALUES ($1, $2, $3, $4, $5, $6, $7, $8 ,$9) returning id, identificacion, nombre").await.unwrap();
 
-	client.query(&statement, &[&identificacion, &nombre, &genero, &estado_civil,
-								&fecha_nacimiento, &numero_telefono, &direccion,
-								&correo, &validado])
+	client.query(&statement, &[&json.identificacion, &json.nombre, &json.genero, &json.estado_civil,
+								&json.fecha_nacimiento, &json.numero_telefono, &json.direccion,
+								&json.correo, &json.validado])
 		.await
 		.expect("Error creating person")
 		.iter()

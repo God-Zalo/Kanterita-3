@@ -29,15 +29,7 @@ pub async fn create_person(db_pool: web::Data<Pool>, json: web::Json<CreatePerso
 		db_pool.get().await.expect("Error connecting to the database");
 
 	
-	let result = db::create_person(&client, json.identificacion.clone(),
-										 json.nombre.clone(),
-										 json.genero.clone(),
-										 json.estado_civil.clone(),
-										 json.fecha_nacimiento.clone(),
-										 json.numero_telefono.clone(),
-										 json.direccion.clone(),
-										 json.correo.clone(),
-										 json.validado.clone()).await;
+	let result = db::create_person(&client, json).await;
 
 	match result {
 		Ok(person) => HttpResponse::Ok().json(person),
