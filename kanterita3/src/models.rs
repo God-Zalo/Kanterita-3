@@ -19,6 +19,7 @@ pub struct DbPeople {
     pub direccion: String,
     pub correo: String,
     pub validado: bool,
+    pub observacion: String,
 }
 
 #[derive(Deserialize)]
@@ -32,4 +33,5 @@ pub struct CreatePerson {
     pub direccion: String,
     pub correo: String,
     pub validado: bool,
+    pub observacion: String,
 }

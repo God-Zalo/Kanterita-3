@@ -22,12 +22,12 @@ pub async fn get_people(client: &Client) -> Result<Vec<DbPeople>, io::Error>{
 
 pub async fn create_person(client: &Client, json: web::Json<CreatePerson>) -> Result<DbPeople, io::Error>{
 
-	let statement = client.prepare("INSERT INTO db_people (identificacion, nombre, genero, estado_civil, fecha_nacimiento, numero_telefono, direccion, correo, validado) 
-									VALUES ($1, $2, $3, $4, $5, $6, $7, $8 ,$9) returning id, identificacion, nombre").await.unwrap();
+	let statement = client.prepare("INSERT INTO db_people (identificacion, nombre, genero, estado_civil, fecha_nacimiento, numero_telefono, direccion, correo, validado, observacion) 
+									VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning id, identificacion, nombre").await.unwrap();
 
 	client.query(&statement, &[&json.identificacion, &json.nombre, &json.genero, &json.estado_civil,
 								&json.fecha_nacimiento, &json.numero_telefono, &json.direccion,
-								&json.correo, &json.validado])
+								&json.correo, &json.validado, &json.observacion])
 		.await
 		.expect("Error creating person")
 		.iter()
