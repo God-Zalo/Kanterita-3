@@ -21,3 +21,18 @@ pub struct DbPeople {
 	pub validado: bool
 
 }
+
+
+#[derive(Deserialize)]
+pub struct CreatePerson {
+	pub identificacion: String,
+	pub nombre: String,
+	pub genero: String,
+	pub estado_civil: String,
+	pub fecha_nacimiento: String,
+	pub numero_telefono: i64,
+	pub direccion: String,
+	pub correo: String,
+	pub validado: bool
+
+}

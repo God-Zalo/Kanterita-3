@@ -27,6 +27,8 @@ async fn main() -> io::Result<()> {
             .data(pool.clone())
             .route("/", web::get().to(status))
             .route("/people{_:/?}", web::get().to(get_people))
+            .route("/people{_:/?}", web::post().to(create_person))
+            //.route("/people/{person_id}{_:/?}", web::get().to(get_person))
     })
     .bind(format!("{}:{}", config.server.host, config.server.port))?
     .run()
