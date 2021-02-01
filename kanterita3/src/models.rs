@@ -22,7 +22,7 @@ pub struct DbPeople {
     pub observacion: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct CreatePerson {
     pub identificacion: String,
     pub nombre: String,

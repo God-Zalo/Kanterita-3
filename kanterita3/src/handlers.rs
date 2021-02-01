@@ -1,7 +1,10 @@
 //multipart
-use std::io::Write;
+use std::{thread, time, io::Write};
 use actix_multipart::Multipart;
 use futures::{StreamExt, TryStreamExt};
+
+// file read
+use crate::file_handler;
 
 //everything else
 use crate::models::{Status,CreatePerson};
@@ -15,8 +18,9 @@ pub async fn status() -> impl Responder {
         .json(Status { status: "Ok".to_string() })
 }
 
-
 pub async fn save_file(mut payload: Multipart) -> Result<HttpResponse, Error> {
+    println!("Uploading file");
+    thread::sleep(time::Duration::from_secs(3));
     // iterate over multipart stream
     while let Ok(Some(mut field)) = payload.try_next().await {
         let content_type = field.content_disposition().unwrap();
@@ -34,8 +38,17 @@ pub async fn save_file(mut payload: Multipart) -> Result<HttpResponse, Error> {
             // filesystem operations are blocking, we have to use threadpool
             f = web::block(move || f.write_all(&data).map(|_| f)).await?;
         }
+	    // Use file handler to read, parse, validate and post
+    println!("Uploaded");
     }
+
+    thread::spawn(|| {
+        println!("processing file");
+        file_handler::handle();
+    });
+
     Ok(web::HttpResponse::Ok().json(Status { status: "Ok".to_string()}))
+    
 }
 
 
