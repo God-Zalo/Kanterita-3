@@ -13,11 +13,6 @@ use deadpool_postgres::{Pool, Client};
 use actix_web::{web, Error, Responder, HttpResponse};
 
 
-pub async fn status() -> impl Responder {
-    web::HttpResponse::Ok()
-        .json(Status { status: "Ok".to_string() })
-}
-
 pub async fn save_file(mut payload: Multipart) -> Result<HttpResponse, Error> {
     println!("Uploading file");
     thread::sleep(time::Duration::from_secs(3));

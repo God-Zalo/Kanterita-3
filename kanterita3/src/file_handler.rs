@@ -50,7 +50,7 @@ fn validate (vec: &mut Vec<&str>){
 	validate_genero(vec[2].to_string());
 	validate_estado_civil(vec[3].to_string());
 	validate_fecha_nacimiento(vec[4].to_string());
-	validate_numero_telefono(vec[5].to_string().parse().expect("nel perro"));
+	validate_numero_telefono(vec[5].to_string().parse().expect("Invalid string"));
 	validate_direccion(vec[6].to_string());
 	validate_correo(vec[7].to_string());
 
@@ -77,7 +77,7 @@ fn parse2json (vec: &mut Vec<&str>){
 	        genero: vec[2].to_owned(),
 	        estado_civil: vec[3].to_owned(),
 	        fecha_nacimiento: vec[4].to_owned(),
-	        numero_telefono: vec[5].to_string().parse().expect("nel perro"),
+	        numero_telefono: vec[5].to_string().parse().expect("Invalid string"),
 	        direccion: vec[6].to_owned(),
 	        correo: vec[7].to_owned(),
 	        validado: false,
